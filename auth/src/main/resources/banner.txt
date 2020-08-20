@@ -1,0 +1,12 @@
+${AnsiColor.BRIGHT_CYAN}                                     ${AnsiColor.BLUE}
+${AnsiColor.BRIGHT_CYAN}       _              _     _        ${AnsiColor.BLUE}    ____
+${AnsiColor.BRIGHT_CYAN}      / \     _   _  | |_  | |__     ${AnsiColor.BLUE}   / ___|    ___   _ __  __   __   ___   _ __
+${AnsiColor.BRIGHT_CYAN}     / _ \   | | | | | __| | '_ \    ${AnsiColor.BLUE}   \___ \   / _ \ | '__| \ \ / /  / _ \ | '__|
+${AnsiColor.BRIGHT_CYAN}    / ___ \  | |_| | | |_  | | | |   ${AnsiColor.BLUE}    ___) | |  __/ | |     \ V /  |  __/ | |
+${AnsiColor.BRIGHT_CYAN}   /_/   \_\  \__,_|  \__| |_| |_|   ${AnsiColor.BLUE}   |____/   \___| |_|      \_/    \___| |_|
+${AnsiColor.BRIGHT_CYAN}
+${AnsiColor.BRIGHT_CYAN}
+${AnsiStyle.BOLD}
+${AnsiColor.CYAN} zunfix  :: ${AnsiColor.BLUE}  ${spring.application.name}  :: ${AnsiColor.RED}  ${spring.profiles.active}
+
+${AnsiStyle.NORMAL}--------------------------------------------------------------------------------------------------------------------------

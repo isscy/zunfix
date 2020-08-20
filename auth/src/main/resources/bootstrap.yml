@@ -1,0 +1,75 @@
+server:
+    port: 9001
+
+spring:
+    application:
+        name: auth
+    profiles:
+        active: '@profile.name@'  # dev
+    cloud:
+        nacos:
+            discovery:
+                server-addr: '@config.server-addr@'
+#                group: '@config.group@'
+#                namespace: '@config.namespace@'
+            config:
+                server-addr: '@discovery.server-addr@'
+                file-extension: yaml
+#                namespace: '@config.namespace@'
+                group: '@config.group@'
+                extension-configs:
+                    - data-id: mysql.yml
+                      group: '@config.group@'
+                      refresh: false
+                    - data-id: redis.yml
+                      group: '@config.group@'
+                      refresh: false
+                    - data-id: zunfix.yml
+                      group: '@config.group@'
+                      refresh: true
+                
+
+
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
+    endpoint:
+        health:
+            show-details: ALWAYS
+
+
+logging.level:
+    com.baomidou.mybatisplus: DEBUG
+    org:
+        springframework:
+            cloud:
+                openfeign: debug
+            security: debug
+feign:
+    client:
+        config:
+            defalut:
+                connectTimeout: 10000
+                readTimeout: 10000
+
+
+mybatis-plus:
+    mapper-locations: classpath:/mapper/*Mapper.xml
+    typeAliasesPackage: cn.red.gravel.core.auth.entity
+    global-config:
+        banner: false
+        db-config:
+            column-underline: true
+            #capital-mode: true
+            logic-delete-value: 1
+            logic-not-delete-value: 0
+        refresh: true
+    configuration:
+        map-underscore-to-camel-case: true
+        cache-enabled: false
+    performanceInterceptor:
+        enabled: true
+

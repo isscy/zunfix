@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ff.zunfix.auth.mapper.SysUserMapper">
+
+
+	<select id="getList" resultType="cn.ff.zunfix.common.core.entity.SysUser">
+		select * from sys_user
+		<where>
+			type = '1' and del_flag = '0'
+			<if test="status != null and status != '' ">
+				and `status` = #{status}
+			</if>
+			<if test="search != null and search != '' ">
+				AND real_name LIKE CONCAT('%',#{search},'%')
+			</if>
+		</where>
+		order by created_time desc
+	</select>
+
+	<select id="getById" resultType="cn.ff.zunfix.common.core.entity.SysUser">
+		select
+		u.*,
+		udr.of_ruler as ofDeptRuler,
+		GROUP_CONCAT(r.code SEPARATOR ',') as rolesString
+		from sys_user u
+		left join sys_user_role_rel ur on ur.user_id = u.id
+		left join sys_role r on ur.role_id = r.id
+		left join sys_user_dept_rel udr on u.id = udr.user_id and udr.del_flag = '0'
+		where u.id = #{userId} and u.del_flag = '0' <!-- and u.status = '1' -->
+		GROUP BY udr.id
+	</select>
+
+	<select id="getByUserName" resultType="cn.ff.zunfix.common.core.entity.SysUser">
+		select
+		*
+		from sys_user where user_name = #{userName} and del_flag = '0'
+		<if test="isUsing == true">
+			and status = '1'
+		</if>
+	</select>
+
+	<select id="getByPhone" resultType="cn.ff.zunfix.common.core.entity.SysUser">
+		select
+		*
+		from sys_user where phone = #{phone} and del_flag = '0'
+		<if test="isUsing == true">
+			and status = '1'
+		</if>
+	</select>
+
+
+	<delete id="deleteBatch">
+		update sys_user set del_flag = '1' where id in
+		<foreach collection="userIds" item="userId" index="no" open="("
+				 separator="," close=")">
+			#{userId}
+		</foreach>
+	</delete>
+
+	<update id="updatePwdById">
+		update sys_user
+		set password = #{pwd}
+		where id = #{id}
+	</update>
+
+	<select id="getOneUserAllRoles" resultType="cn.ff.zunfix.common.core.entity.SysRole">
+		select *
+		from sys_role r
+		where r.status = '1'
+		  and r.id in (select ur.role_id from sys_user_role_rel ur where user_id = #{userId})
+	</select>
+
+
+	<select id="getListByRoleCode" resultType="cn.ff.zunfix.common.core.entity.SysUser">
+		select u.*
+		from sys_user u
+				 left join sys_user_role_rel rel on rel.user_id = u.id
+				 left join sys_role r on r.id = rel.role_id
+		where u.del_flag = '0'
+		  and r.code = #{roleCode}
+	</select>
+	<select id="getListByRole" resultType="cn.ff.zunfix.common.core.entity.SysUser">
+		select u.*
+		from sys_user u
+				 left join sys_user_role_rel rel on rel.user_id = u.id
+		where u.del_flag = '0'
+		  and rel.role_id = #{roleId,jdbcType=INTEGER}
+	</select>
+</mapper>

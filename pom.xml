@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>cn.ff.zunfix</groupId>
+	<artifactId>parent</artifactId>
+	<name>zunfix-platform</name>
+	<version>1.0-SNAPSHOT</version>
+	<description>最终的快速开发平台</description>
+	<modules>
+		<module>common</module>
+		<module>gateway</module>
+		<module>auth</module>
+	</modules>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.3.2.RELEASE</version>
+	</parent>
+
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<skipTests>true</skipTests>
+		<spring.cloud.version>Hoxton.SR7</spring.cloud.version>
+		<alibaba.cloud.version>2.2.1.RELEASE</alibaba.cloud.version>
+		<mybatis-plus.version>3.3.2</mybatis-plus.version>
+	</properties>
+
+	<dependencies>
+		<!-- ============================ 测试相关 BEGIN ============================ -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+		</dependency>
+		<!-- ============================ 测试相关 END ============================ -->
+		<!-- ============================ 基础工具类 BEGIN ============================ -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.11</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+		<!-- ============================ 基础工具类 END ============================ -->
+
+
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring.cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba.cloud</groupId>
+				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
+				<version>${alibaba.cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-boot-starter</artifactId>
+				<version>${mybatis-plus.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-annotation</artifactId>
+				<version>${mybatis-plus.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.ff.zunfix</groupId>
+				<artifactId>common-core</artifactId>
+				<version>${version}</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.ff.zunfix</groupId>
+				<artifactId>common-security</artifactId>
+				<version>${version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>2.11.2</version>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid</artifactId>
+				<version>1.1.23</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault><!--默认激活配置-->
+			</activation>
+			<properties>
+				<profile.name>dev</profile.name><!--当前环境-->
+				<config.server-addr>127.0.0.1:8848</config.server-addr><!--配置中心地址-->
+				<discovery.server-addr>127.0.0.1:8848</discovery.server-addr>
+				<config.namespace>zunfix</config.namespace>
+				<config.group>DEV</config.group> <!--配置中心多环境支持的namespace,使用ID默认为空-->
+			</properties>
+		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<profile.name>test</profile.name>
+				<config.server-addr>192.168.48.200:8848</config.server-addr>
+				<discovery.server-addr>192.168.48.200:8848</discovery.server-addr>
+				<config.namespace/>
+			</properties>
+		</profile>
+
+	</profiles>
+
+
+
+	<build>
+		<finalName>${project.name}</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>${spring.boot.version}</version>
+					<configuration>
+						<finalName>${project.build.finalName}</finalName>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>repackage</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+			</plugins>
+		</pluginManagement>
+		<plugins>
+
+		</plugins>
+	</build>
+
+
+</project>

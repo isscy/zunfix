@@ -1,0 +1,53 @@
+spring:
+    
+    cloud:
+        gateway:
+            globalcors:
+                cors-configurations:
+                    '[/**]':
+                        allow-credentials: true
+                        allowed-origins: "*"
+                        allowed-headers: "*"
+                        allowed-methods:
+                            - OPTIONS
+                            - GET
+                            - POST
+                            - PUT
+                            - DELETE
+                            - PATCH
+                        max-age: 3600
+            discovery:
+                locator:
+                    enabled: true
+            default-filters:
+            routes:   # 此处 id 必须和URL前缀一样 否则会鉴权出错的
+                -   id: auth
+                    uri: lb://auth
+                    predicates:
+                        - Path=/auth/**
+                    args:
+                    retries: 1 # 只再重试一次
+                    series: SERVER_ERROR # 5XX 的错误才重试
+                    methods: GET
+                    filters:
+                        - AddRequestHeader=handle-server, auth
+                        - RewritePath=/auth/(?<path>.*), /$\{path}
+                        - name: Retry
+                        - name: RequestRateLimiter # 请求数限流
+                          args:
+                              key-resolver: "#{@ipKeyResolver}"
+                              redis-rate-limiter.replenishRate: 1 #每秒允许的请求数
+                              redis-rate-limiter.burstCapacity: 2 #允许并发的请求数
+                              
+                -   id: order
+                    uri: lb://order
+                    predicates:
+                        - Path=/order/**
+                    args:
+                    retries: 1 # 只再重试一次
+                    series: SERVER_ERROR # 5XX 的错误才重试
+                    methods: GET
+                    filters:
+                        - AddRequestHeader=handle-server, order
+                        - RewritePath=/order/(?<path>.*), /$\{path}
+                        -   name: Retry

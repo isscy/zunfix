@@ -1,0 +1,25 @@
+server:
+    port: 8888
+
+spring:
+    application:
+        name: gateway
+    profiles:
+        active: '@profile.name@'  # dev
+    cloud:
+        nacos:
+            discovery:
+                server-addr: '@config.server-addr@'
+            config: # 当前会加载 @config.group@ group中的 auth.yaml  mysql.yml redis.yml
+                server-addr: '@discovery.server-addr@'
+                file-extension: yaml
+                group: '@config.group@'
+                namespace: '@config.namespace@'
+                extension-configs:
+                    -   dataId: mysql.yml
+                        group: '@config.group@'
+                        refresh: false
+                    -   dataId: redis.yml
+                        group: '@config.group@'
+                        refresh: false
+                
