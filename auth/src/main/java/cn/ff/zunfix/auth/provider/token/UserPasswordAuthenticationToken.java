@@ -56,6 +56,7 @@ public class UserPasswordAuthenticationToken extends BasisAuthenticationToken {
     /**
      * 在Provider中new出新的token会丢失之前的  所以加上
      */
+    @Override
     public void setDetailPlus(Authentication authentication){
         this.setDetails(authentication.getDetails());
         UserPasswordAuthenticationToken old = (UserPasswordAuthenticationToken)authentication;

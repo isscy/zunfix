@@ -1,6 +1,7 @@
 package cn.ff.zunfix.auth.provider.token;
 
 import cn.ff.zunfix.common.security.constant.SecurityConstant;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;
 
@@ -34,7 +35,13 @@ public class QrAuthenticationToken extends BasisAuthenticationToken {
         setAuthenticated(true);
     }
 
-
+    @Override
+    public void setDetailPlus(Authentication authentication){
+        this.setDetails(authentication.getDetails());
+        QrAuthenticationToken old = (QrAuthenticationToken)authentication;
+        this.setClientId(old.getClientId());
+        this.setClientSecret(old.getClientSecret());
+    }
     @Override
     public Object getCredentials() {
         return null;

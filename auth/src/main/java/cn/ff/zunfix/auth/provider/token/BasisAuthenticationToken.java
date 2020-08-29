@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
@@ -13,8 +14,7 @@ import java.util.Collection;
  *
  * @author fengfan 2020/8/18
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
+
 public abstract class BasisAuthenticationToken extends AbstractAuthenticationToken {
 
     /**
@@ -52,9 +52,12 @@ public abstract class BasisAuthenticationToken extends AbstractAuthenticationTok
     public BasisAuthenticationToken(Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
     }
+
     public BasisAuthenticationToken() {
         super(null);
     }
+
+    public abstract void setDetailPlus(Authentication authentication);
 
 
     @Override
@@ -66,4 +69,56 @@ public abstract class BasisAuthenticationToken extends AbstractAuthenticationTok
     public void setDetails(Object details) {
         super.setDetails(details);
     }*/
+
+    public String getLoginType() {
+        return loginType;
+    }
+
+    public void setLoginType(String loginType) {
+        this.loginType = loginType;
+    }
+
+    public String getCaptchaCode() {
+        return captchaCode;
+    }
+
+    public void setCaptchaCode(String captchaCode) {
+        this.captchaCode = captchaCode;
+    }
+
+    public String getCaptchaType() {
+        return captchaType;
+    }
+
+    public void setCaptchaType(String captchaType) {
+        this.captchaType = captchaType;
+    }
+
+    public long getExpiration() {
+        return expiration;
+    }
+
+    public void setExpiration(long expiration) {
+        this.expiration = expiration;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getClientSecret() {
+        return clientSecret;
+    }
+
+    public void setClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+    }
+
+    public void setPrincipal(Object principal) {
+        this.principal = principal;
+    }
 }

@@ -1,6 +1,11 @@
 package cn.ff.zunfix.auth.provider;
 
+import cn.ff.zunfix.auth.provider.token.BasisAuthenticationToken;
+import cn.ff.zunfix.auth.service.DefaultClientDetailsService;
+import cn.ff.zunfix.common.security.entity.SysOauthClientDetails;
+import cn.ff.zunfix.common.security.exception.BasisAuthenticationException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -17,35 +22,21 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 public abstract class AbstractUserDetailsAuthenticationProvider implements AuthenticationProvider, InitializingBean {
 
 
-
-
     protected abstract void additionalAuthenticationChecks(UserDetails var1, Authentication var2) throws AuthenticationException;
 
     @Override
     public final void afterPropertiesSet() {
     }
 
+
     @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String username = authentication.getPrincipal() == null ? "NONE_PROVIDED" : authentication.getName();
-        UserDetails user;
-
-        try {
-            user = this.retrieveUser(username, authentication);
-        } catch (UsernameNotFoundException var6) {
-            log.debug("User \'" + username + "\' not found");
-
-            throw var6;
-        }
-
-        this.additionalAuthenticationChecks(user, authentication);
-
-        return this.createSuccessAuthentication(authentication, user);
-    }
+    public abstract Authentication authenticate(Authentication authentication) throws AuthenticationException;
 
     protected abstract Authentication createSuccessAuthentication(Authentication authentication, UserDetails user);
 
 
     protected abstract UserDetails retrieveUser(String username, Authentication authentication) throws AuthenticationException;
+
+
 
 }

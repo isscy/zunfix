@@ -9,12 +9,11 @@ import org.springframework.security.core.AuthenticationException;
  *
  * @author fengfan 2020/3/17
  */
-public abstract class BasisAuthenticationException extends AuthenticationException {
+public class BasisAuthenticationException extends AuthenticationException {
 
     @Getter
     private Integer errorCode;
 
-    private String EXT = "[认证异常]";
 
     public BasisAuthenticationException(String msg) {
         super(msg);
@@ -24,7 +23,5 @@ public abstract class BasisAuthenticationException extends AuthenticationExcepti
         return HttpStatus.BAD_REQUEST.value();
     }
 
-    public String getEXT() {
-        return EXT;
-    }
+
 }

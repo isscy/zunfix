@@ -1,4 +1,4 @@
-package cn.ff.zunfix.common.redis.config;
+package cn.ff.zunfix.common.redis.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -8,12 +8,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author fengfan 2020/8/12
  */
 //@ConfigurationProperties(prefix = "spring.redis.redisson")
+@Deprecated
 public class RedissonProperties {
 
 
-
     private String config;
-    private String enable  ;
+    private String enable;
 
     public String getConfig() {
         return config;

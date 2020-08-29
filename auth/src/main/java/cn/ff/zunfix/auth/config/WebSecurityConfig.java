@@ -1,5 +1,6 @@
 package cn.ff.zunfix.auth.config;
 
+import cn.ff.zunfix.auth.provider.SmsAuthenticationProvider;
 import cn.ff.zunfix.auth.provider.UserPasswordAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserPasswordAuthenticationProvider userPasswordAuthenticationProvider;
     private final DaoAuthenticationProvider daoAuthenticationProvider;
+    private final SmsAuthenticationProvider smsAuthenticationProvider;
 
 
 /*
@@ -50,7 +52,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(daoAuthenticationProvider)
-                .authenticationProvider(userPasswordAuthenticationProvider);
+                .authenticationProvider(userPasswordAuthenticationProvider)
+                .authenticationProvider(smsAuthenticationProvider);
 
     }
 

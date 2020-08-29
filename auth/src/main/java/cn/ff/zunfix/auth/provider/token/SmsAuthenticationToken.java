@@ -1,9 +1,14 @@
 package cn.ff.zunfix.auth.provider.token;
 
 import cn.ff.zunfix.common.security.constant.SecurityConstant;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;
+import org.springframework.security.oauth2.provider.ClientDetails;
 
 import javax.security.auth.Subject;
 import java.util.Collection;
@@ -13,6 +18,7 @@ import java.util.Collection;
  *
  * @author fengfan 2020/8/17
  */
+@NoArgsConstructor
 public class SmsAuthenticationToken extends BasisAuthenticationToken {
     private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 
@@ -45,18 +51,38 @@ public class SmsAuthenticationToken extends BasisAuthenticationToken {
     public Object getPrincipal() {
         return super.principal;
     }*/
+    @Override
+    public void setDetailPlus(Authentication authentication){
+        this.setDetails(authentication.getDetails());
+        SmsAuthenticationToken old = (SmsAuthenticationToken)authentication;
+        this.setClientId(old.getClientId());
+        this.setClientSecret(old.getClientSecret());
+    }
+    public void setDetailPlus(Object details, ClientDetails client){
+        this.setDetails(details);
+        this.setClientId(client.getClientId());
+        this.setClientSecret(client.getClientSecret());
+    }
 
+
+    @Override
+    public boolean implies(Subject subject) {
+        return false;
+    }
 
     public String getPhone() {
         return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getCode() {
         return code;
     }
 
-    @Override
-    public boolean implies(Subject subject) {
-        return false;
+    public void setCode(String code) {
+        this.code = code;
     }
 }

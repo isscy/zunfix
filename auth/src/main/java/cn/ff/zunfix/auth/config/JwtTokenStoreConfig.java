@@ -2,7 +2,7 @@ package cn.ff.zunfix.auth.config;
 
 import cn.ff.zunfix.auth.mapper.SysOauthClientDetailsMapper;
 import cn.ff.zunfix.auth.service.DefaultClientDetailsService;
-import cn.ff.zunfix.auth.token.JwtTokenEnhancer;
+import cn.ff.zunfix.auth.handler.enhancer.JwtTokenEnhancer;
 import cn.ff.zunfix.common.security.service.ClientDetailsServiceResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -5,6 +5,7 @@ import cn.ff.zunfix.auth.service.DefaultClientDetailsService;
 import cn.ff.zunfix.common.core.utils.Rs;
 import cn.ff.zunfix.common.core.utils.WebUtil;
 import cn.ff.zunfix.common.security.entity.SysOauthClientDetails;
+import cn.ff.zunfix.common.security.exception.BasisAuthenticationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -36,8 +37,8 @@ import java.io.PrintWriter;
  *
  * @author fengfan 2020-08-19
  */
-@Component
 @Slf4j
+@Component
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private final ObjectMapper objectMapper;
@@ -55,14 +56,13 @@ public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessH
             String grantType = request.getParameter(OAuth2Utils.GRANT_TYPE);
             String clientId = "";
             if (authentication instanceof UserPasswordAuthenticationToken) {
-                UserPasswordAuthenticationToken token = (UserPasswordAuthenticationToken) authentication;
-                SysOauthClientDetails clientDetails = defaultClientDetailsService.loadClientByClientId(token.getClientId());
+                /*SysOauthClientDetails clientDetails = defaultClientDetailsService.loadClientByClientId(token.getClientId());
                 if (clientDetails != null && StringUtils.isNotBlank(token.getClientSecret()) && passwordEncoder.matches(token.getClientSecret(), clientDetails.getClientSecret())) {
                     clientId = token.getClientId();
                 } else {
-                    throw new RuntimeException("client_id或者client_secret错误！");
-                }
-                //clientId = ((UserPasswordAuthenticationToken) authentication).getClientId();
+                    throw new BasisAuthenticationException("client_id或者client_secret错误！");
+                }*/
+                clientId = ((UserPasswordAuthenticationToken) authentication).getClientId();
             }/*else if (authentication instanceof PhoneAuthenticationToken){
                 clientId = ((PhoneAuthenticationToken) authentication).getClientId();
             }*/

@@ -1,9 +1,11 @@
 package cn.ff.zunfix.auth.config;
 
 import cn.ff.zunfix.auth.mapper.SysOauthClientDetailsMapper;
+import cn.ff.zunfix.auth.provider.granter.RefreshNewTokenGranter;
+import cn.ff.zunfix.auth.provider.granter.SmsTokenGranter;
 import cn.ff.zunfix.auth.service.DefaultClientDetailsService;
 import cn.ff.zunfix.auth.service.UserDetailsServiceImpl;
-import cn.ff.zunfix.auth.token.JwtTokenEnhancer;
+import cn.ff.zunfix.auth.handler.enhancer.JwtTokenEnhancer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,12 +18,21 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.CompositeTokenGranter;
+import org.springframework.security.oauth2.provider.OAuth2RequestFactory;
+import org.springframework.security.oauth2.provider.TokenGranter;
+import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.code.AuthorizationCodeTokenGranter;
+import org.springframework.security.oauth2.provider.password.ResourceOwnerPasswordTokenGranter;
+import org.springframework.security.oauth2.provider.refresh.RefreshTokenGranter;
+import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,7 +46,7 @@ import java.util.List;
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
 
-    private final PasswordEncoder passwordEncoder;
+    //private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final UserDetailsServiceImpl userDetailsService;
     private final DefaultClientDetailsService defaultClientDetailsService;
@@ -50,6 +61,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+        List<TokenGranter> tokenGranters = getTokenGranters(endpoints.getAuthorizationCodeServices(), endpoints.getTokenServices(), endpoints.getOAuth2RequestFactory());
+        endpoints.tokenGranter(new CompositeTokenGranter(tokenGranters));
         TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
         List<TokenEnhancer> delegates = new ArrayList<>();
         delegates.add(jwtTokenEnhancer); //配置JWT的内容增强器
@@ -91,6 +104,18 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .tokenKeyAccess("isAuthenticated()")
                 .checkTokenAccess("permitAll()")
                 .allowFormAuthenticationForClients();
+    }
+
+
+    private List<TokenGranter> getTokenGranters(AuthorizationCodeServices authorizationCodeServices, AuthorizationServerTokenServices tokenServices, OAuth2RequestFactory requestFactory) {
+        List<TokenGranter> granters = Arrays.asList(
+                new AuthorizationCodeTokenGranter(tokenServices, authorizationCodeServices, defaultClientDetailsService, requestFactory),
+                new ResourceOwnerPasswordTokenGranter(authenticationManager, tokenServices, defaultClientDetailsService, requestFactory),
+                new RefreshTokenGranter(tokenServices, defaultClientDetailsService, requestFactory),
+                new RefreshNewTokenGranter(authenticationManager, tokenServices, defaultClientDetailsService, requestFactory, userDetailsService, tokenStore), // 自定义刷新
+                new SmsTokenGranter(authenticationManager, tokenServices, defaultClientDetailsService, requestFactory, userDetailsService) // 自定义 短信
+        );
+        return new ArrayList<TokenGranter>(granters);
     }
 
 }

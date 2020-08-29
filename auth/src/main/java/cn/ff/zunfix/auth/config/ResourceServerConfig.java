@@ -39,7 +39,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.addFilterBefore(loginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+        http//.addFilterBefore(loginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests().antMatchers(oauth2Properties.unCheckUrlArray()).permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable()

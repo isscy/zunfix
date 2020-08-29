@@ -3,6 +3,8 @@ package cn.ff.zunfix.auth.provider;
 import cn.ff.zunfix.auth.provider.token.UserPasswordAuthenticationToken;
 import cn.ff.zunfix.auth.service.DefaultClientDetailsService;
 import cn.ff.zunfix.auth.service.UserDetailsServiceImpl;
+import cn.ff.zunfix.common.security.entity.SysOauthClientDetails;
+import cn.ff.zunfix.common.security.exception.BasisAuthenticationException;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.Authentication;
@@ -22,7 +24,7 @@ import org.springframework.stereotype.Component;
 public class UserPasswordAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
     private final UserDetailsServiceImpl userDetailsService;
     private final PasswordEncoder passwordEncoder;
-    //private final DefaultClientDetailsService defaultClientDetailsService;
+    private final DefaultClientDetailsService defaultClientDetailsService;
 
 
     @Override
@@ -61,6 +63,11 @@ public class UserPasswordAuthenticationProvider extends AbstractUserDetailsAuthe
         String rawPassword = authentication.getCredentials().toString();
         if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
             throw new UsernameNotFoundException("账号或密码不正确");
+        }
+        UserPasswordAuthenticationToken token = (UserPasswordAuthenticationToken) authentication;
+        SysOauthClientDetails clientDetails = defaultClientDetailsService.loadClientByClientId(token.getClientId());
+        if (clientDetails == null || StringUtils.isBlank(token.getClientSecret()) || !passwordEncoder.matches(token.getClientSecret(), clientDetails.getClientSecret())) {
+            throw new BasisAuthenticationException("client_id或者client_secret错误！");
         }
     }
 

@@ -36,7 +36,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
          */
         SysUser user = sysUserMapper.getByUserName(username, true);
         if (user == null) {
-            throw new UsernameNotFoundException("用户[ " + username + " ] 未注册或已删除");
+            throw new UsernameNotFoundException("用户[ " + username + " ] 未注册或被禁用");
+        }
+        return buildUserInfoDetail(user);
+    }
+
+    public UserDetails loadUserByPhone(String phone) throws UsernameNotFoundException {
+        SysUser user = sysUserMapper.getByPhone(phone, true);
+        if (user == null) {
+            throw new UsernameNotFoundException("手机号[ " + phone + " ] 未注册或被禁用");
         }
         return buildUserInfoDetail(user);
     }
