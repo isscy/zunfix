@@ -31,7 +31,7 @@ import java.util.List;
 public class UnifiedExceptionHandler {
 
 
-    @ExceptionHandler({AuthenticationException.class})
+    @ExceptionHandler({AuthenticationException.class, InvalidGrantException.class})
     public static R authenticationException(Exception ex, HttpServletRequest request, HttpServletResponse response) {
         ex.printStackTrace();
         R resultBody = resolveException(ex, request.getRequestURI());
@@ -48,7 +48,7 @@ public class UnifiedExceptionHandler {
         BindException bindException = (BindException) e;
         List<ObjectError> allErrors = bindException.getBindingResult().getAllErrors();
         String msg = allErrors.get(0).getDefaultMessage();
-        return Rs.fail(ResultEnum.CLIENT_PARAM_405.getCode(), msg);
+        return Rs.fail(ResultEnum.CLIENT_PARAM_406.getCode(), msg);
     }
 
     /**
@@ -59,7 +59,7 @@ public class UnifiedExceptionHandler {
         MethodArgumentNotValidException methodArgumentNotValidException = (MethodArgumentNotValidException) e;
         List<ObjectError> allErrors = methodArgumentNotValidException.getBindingResult().getAllErrors();
         String msg = allErrors.get(0).getDefaultMessage();
-        return Rs.fail(ResultEnum.CLIENT_PARAM_405.getCode(), msg);
+        return Rs.fail(ResultEnum.CLIENT_METHOD_405.getCode(), msg);
     }
 
     /**
@@ -118,7 +118,7 @@ public class UnifiedExceptionHandler {
             code = ResultEnum.ACCESS_DENIED;
             httpStatus = HttpStatus.FORBIDDEN.value();
         } else if (superClassName.contains("AuthenticationException")) { // 认证服务器 拒绝
-            code = ResultEnum.CLIENT_ERROR_401;
+            code = ResultEnum.CLIENT_AUTH_401;
             httpStatus = HttpStatus.UNAUTHORIZED.value();
         }
         return buildBody(ex, code, path, httpStatus);

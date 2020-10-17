@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-cn.ff.zunfix.common.security.properties.Oauth2Properties
+    cn.ff.zunfix.common.security.properties.Oauth2Properties,\
+    cn.ff.zunfix.common.security.config.ClientSecurityConfig

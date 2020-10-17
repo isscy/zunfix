@@ -13,9 +13,7 @@ import org.springframework.security.oauth2.provider.token.AbstractTokenGranter;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * 自定义抽象token授予者

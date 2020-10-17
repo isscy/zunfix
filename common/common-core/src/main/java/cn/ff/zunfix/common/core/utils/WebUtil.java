@@ -1,8 +1,7 @@
 package cn.ff.zunfix.common.core.utils;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,11 +36,11 @@ public class WebUtil {
      * 客户端返回JSON字符串
      */
     public static void writeJson(HttpServletResponse response, Object object) {
-        writeJson(response, Json.toJsonString(object), MediaType.APPLICATION_JSON_VALUE, HttpStatus.OK.value());
+        writeJson(response, Json.toJsonString(object), /*MediaType.APPLICATION_JSON_VALUE*/"application/json", /*HttpStatus.OK.value()*/200);
     }
 
     public static void writeJson(HttpServletResponse response, Object object, int httpCode) {
-        writeJson(response, Json.toJsonString(object), MediaType.APPLICATION_JSON_VALUE, httpCode);
+        writeJson(response, Json.toJsonString(object), /*MediaType.APPLICATION_JSON_VALUE*/"application/json", httpCode);
     }
 
     public static void writeJson(HttpServletResponse response, String string, String type, int httpCode) {
@@ -61,9 +60,8 @@ public class WebUtil {
     /**
      * 得到用户的真实地址
      */
-    public static String getIpAddr() {
+    public static String getIpAddr(HttpServletRequest request) {
         final String UNKNOWN = "unknown";
-        HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
         String ip = request.getHeader("x-forwarded-for");
         if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");

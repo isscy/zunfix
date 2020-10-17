@@ -10,16 +10,19 @@ spring:
         nacos:
             discovery:
                 server-addr: '@config.server-addr@'
-            config: # 当前会加载 @config.group@ group中的 auth.yaml  mysql.yml redis.yml
+            config:
                 server-addr: '@discovery.server-addr@'
                 file-extension: yaml
                 group: '@config.group@'
-                namespace: '@config.namespace@'
                 extension-configs:
-                    -   dataId: mysql.yml
+                    -   data-id: mysql.yml
                         group: '@config.group@'
                         refresh: false
-                    -   dataId: redis.yml
+                    -   data-id: redis.yml
                         group: '@config.group@'
                         refresh: false
-                
+                    -   data-id: zunfix.yml
+                        group: '@config.group@'
+                        refresh: true
+
+

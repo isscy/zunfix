@@ -1,7 +1,6 @@
 package cn.ff.zunfix.auth.provider.token;
 
 import cn.ff.zunfix.common.security.constant.SecurityConstant;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -9,7 +8,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;
 
-import javax.security.auth.Subject;
 import java.util.Collection;
 
 /**

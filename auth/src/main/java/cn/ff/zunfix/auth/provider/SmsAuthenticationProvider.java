@@ -1,12 +1,9 @@
 package cn.ff.zunfix.auth.provider;
 
 import cn.ff.zunfix.auth.provider.token.SmsAuthenticationToken;
-import cn.ff.zunfix.auth.provider.token.UserPasswordAuthenticationToken;
 import cn.ff.zunfix.auth.service.DefaultClientDetailsService;
 import cn.ff.zunfix.auth.service.LoginService;
 import cn.ff.zunfix.auth.service.UserDetailsServiceImpl;
-import cn.ff.zunfix.common.security.entity.SysOauthClientDetails;
-import cn.ff.zunfix.common.security.exception.BasisAuthenticationException;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.Authentication;

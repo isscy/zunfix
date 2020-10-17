@@ -1,5 +1,6 @@
 package cn.ff.zunfix.common.core.entity;
 
+import cn.ff.zunfix.common.core.utils.Rs;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -31,5 +32,15 @@ public class R<T> implements Serializable {
         this.code = code;
         this.message = message;
         this.data = data;
+    }
+
+    public boolean isSuccess(){
+        return Rs.successCode.equals(code);
+    }
+    public boolean isSuccess(boolean needHadValue){
+        if (needHadValue){
+            return isSuccess() && data != null;
+        }
+        return isSuccess();
     }
 }

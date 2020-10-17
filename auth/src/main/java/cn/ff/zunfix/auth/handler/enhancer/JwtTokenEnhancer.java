@@ -9,10 +9,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Jwt内容增强器
+ * Jwt内容增强器  JWT中添加自定义信息
  *
  * @author fengfan 2020/8/12
  */
+@Deprecated
 public class JwtTokenEnhancer implements TokenEnhancer  {
     @Override
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {

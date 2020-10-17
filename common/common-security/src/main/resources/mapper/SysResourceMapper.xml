@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.ff.zunfix.common.security.mapper.SysResourceMapper">
+
+
+    <select id="getAllAuthority" resultType="cn.ff.zunfix.common.core.entity.SysResource">
+
+        select 'PC' AS `clazz`,
+        m.`id` AS `id`,
+        m.`type` AS `type`,
+        m.`name` AS `name`,
+        m.`title` AS `title`,
+        m.`parent_id` AS `parent_id`,
+        m.`level` AS `level`,
+        m.`url` AS `url`,
+        m.`method` AS `method`,
+        m.`visible` AS `visible`,
+        m.`server_id` AS `server_id`,
+        m.`order_num` AS `order_num`,
+        m.`perms` AS `perms`,
+        m.`icon` AS `icon`,
+        m.`create_by` AS `create_by`,
+        m.`create_time` AS `create_time`,
+        m.`remark` AS `remark`,
+        r.`id` AS roleId,
+        r.`code` AS roleCode,
+        r.`name` AS roleName
+        from `sys_resource` m
+        left join sys_role_resource_rel rm on m.id = rm.menu_id <!-- and rm.type = 'PC' -->
+        left join sys_role r on r.id = rm.role_id
+        where m.url is not null and m.url != ''
+        <!--union all
+        select 'APP'           AS `clazz`,
+               p.`id`          AS `id`,
+               p.`type`        AS `type`,
+               p.`name`        AS `name`,
+               p.`title`       AS `title`,
+               p.`parent_id`   AS `parent_id`,
+               p.`level`       AS `level`,
+               p.`url`         AS `url`,
+               p.`method`      AS `method`,
+               p.`visible`     AS `visible`,
+               p.`server_id`   AS `server_id`,
+               p.`order_num`   AS `order_num`,
+               p.`perms`       AS `perms`,
+               p.`icon`        AS `icon`,
+               p.`create_by`   AS `create_by`,
+               p.`create_time` AS `create_time`,
+               p.`remark`      AS `remark`,
+               r.`id`          AS roleId,
+               r.`code`        AS roleCode,
+               r.`name`        AS roleName
+        from `sys_app_page` p
+                 left join sys_role_menu_rel rm on p.id = rm.menu_id and rm.type = 'PC'
+                 left join sys_role r on r.id = rm.role_id
+            where p.url is not null and p.url != '' -->
+    </select>
+
+
+    <select id="getResourceRolesCacheRel" resultType="cn.ff.zunfix.common.core.entity.SysResource">
+        select
+        m.`id` AS `id`,
+        m.`type` AS `type`,
+        m.`name` AS `name`,
+        m.`url` AS `url`,
+        m.`method` AS `method`,
+        m.`server_id` AS `server_id`,
+        group_concat(r.`code`)AS ofRoles
+        from `sys_resource` m
+        left join sys_role_resource_rel rm on m.id = rm.menu_id <!-- and rm.type = 'PC' -->
+        left join sys_role r on r.id = rm.role_id
+        where m.url is not null and m.url != '' and m.type = 'F'
+        GROUP BY m.id
+    </select>
+
+</mapper>

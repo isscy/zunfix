@@ -73,7 +73,8 @@ public class BaseUserDetail implements UserDetails, CredentialsContainer, Serial
         return user.isEnabled();
     }
 
-    public SysUser getExt() {
+
+    public SysUser getSysUser() {
         return sysUser;
     }
 

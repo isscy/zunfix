@@ -1,6 +1,6 @@
 package cn.ff.zunfix.auth.service;
 
-import cn.ff.zunfix.auth.mapper.SysUserMapper;
+import cn.ff.zunfix.common.security.mapper.SysUserMapper;
 import cn.ff.zunfix.common.core.entity.SysRole;
 import cn.ff.zunfix.common.core.entity.SysUser;
 import cn.ff.zunfix.common.security.constant.SecurityConstant;

@@ -1,17 +1,11 @@
 package cn.ff.zunfix.auth.provider;
 
-import cn.ff.zunfix.auth.provider.token.BasisAuthenticationToken;
-import cn.ff.zunfix.auth.service.DefaultClientDetailsService;
-import cn.ff.zunfix.common.security.entity.SysOauthClientDetails;
-import cn.ff.zunfix.common.security.exception.BasisAuthenticationException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 /**
  * 自定义 基础Provider

@@ -6,8 +6,10 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -24,6 +26,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 @Slf4j
 @EnableConfigurationProperties(RedisProperties.class)
 @ConditionalOnProperty(value = "zunfix.redis.lettuce.enable", havingValue = "true", matchIfMissing = true)
+@AutoConfigureBefore(RedisAutoConfiguration.class)
 public class LettuceRedisAutoConfig {
 
     @Bean(name = "redisTemplate")

@@ -57,8 +57,8 @@ feign:
 
 
 mybatis-plus:
-    mapper-locations: classpath:/mapper/*Mapper.xml
-    typeAliasesPackage: cn.red.gravel.core.auth.entity
+    mapper-locations: classpath*:/mapper/*Mapper.xml
+    typeAliasesPackage: cn.ff.zunfix.auth.entity
     global-config:
         banner: false
         db-config:

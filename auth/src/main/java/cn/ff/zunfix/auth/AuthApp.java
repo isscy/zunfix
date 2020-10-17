@@ -9,7 +9,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
  *
  * @author fengfan 2020/8/10
  */
-@MapperScan(basePackages = {"cn.ff.zunfix.auth.mapper"})
+@MapperScan(basePackages = {"cn.ff.zunfix.auth.mapper", "cn.ff.zunfix.common.security.mapper"})
 @SpringCloudApplication
 public class AuthApp {
 

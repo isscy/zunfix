@@ -1,4 +1,4 @@
-package cn.ff.zunfix.auth.mapper;
+package cn.ff.zunfix.common.security.mapper;
 
 
 import cn.ff.zunfix.common.core.entity.SysRole;

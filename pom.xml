@@ -13,6 +13,7 @@
 		<module>common</module>
 		<module>gateway</module>
 		<module>auth</module>
+		<module>user</module>
 	</modules>
 	<packaging>pom</packaging>
 
@@ -84,6 +85,17 @@
 				<version>${mybatis-plus.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-core</artifactId>
+				<version>${mybatis-plus.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-extension</artifactId>
+				<version>${mybatis-plus.version}</version>
+			</dependency>
+
+			<dependency>
 				<groupId>cn.ff.zunfix</groupId>
 				<artifactId>common-core</artifactId>
 				<version>${version}</version>
@@ -142,7 +154,6 @@
 		</profile>
 
 	</profiles>
-
 
 
 	<build>

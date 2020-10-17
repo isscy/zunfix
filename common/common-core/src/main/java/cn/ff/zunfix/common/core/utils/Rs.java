@@ -11,22 +11,22 @@ import cn.ff.zunfix.common.core.entity.R;
  */
 public class Rs {
 
-    private static final Integer successCode = ResultEnum.SUCCESS.getCode();
+    public static final Integer successCode = ResultEnum.SUCCESS.getCode();
 
     public static R ok() {
 
         return new R(successCode);
     }
 
-    public static <T> R ok(T data) {
-        return new R<>(successCode, null, data);
+    public static <T> R<T> ok(T data) {
+        return new R<T>(successCode, null, data);
     }
 
-    public static <T> R ok(String message, T data) {
+    public static <T> R<T> ok(String message, T data) {
         return new R<>(successCode, message, data);
     }
 
-    public static <T> R ok(Integer code, String message, T data) {
+    public static <T> R<T> ok(Integer code, String message, T data) {
         return new R<>(code, message, data);
     }
 
@@ -35,7 +35,7 @@ public class Rs {
     }
 
     public static R fail(ResultEnum resultEnum) {
-        return new R<>(resultEnum.getCode(), resultEnum.getMessage());
+        return new R<>(resultEnum.getCode(), resultEnum.getMessage(), null);
     }
 
     public static R fail(int code, String msg) {

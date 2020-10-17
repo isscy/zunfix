@@ -49,10 +49,10 @@
 			<groupId>cn.ff.zunfix</groupId>
 			<artifactId>common-security</artifactId>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>cn.ff.zunfix</groupId>
 			<artifactId>common-redis-starter</artifactId>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
@@ -88,5 +88,21 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>**/*.jks</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>**/*.jks</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
 </project>

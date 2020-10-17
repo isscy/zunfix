@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-cn.ff.zunfix.common.redis.config.LettuceRedisAutoConfig
+cn.ff.zunfix.common.redis.config.LettuceRedisAutoConfig,\
+  cn.ff.zunfix.common.redis.utils.RedisUtil

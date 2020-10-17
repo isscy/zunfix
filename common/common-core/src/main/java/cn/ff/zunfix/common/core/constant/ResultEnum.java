@@ -25,18 +25,20 @@ public enum ResultEnum {
     /**
      * 服务器错误相关 50开头的四位数字
      */
-    SERVER_ERROR(5000, "系统错误", "Server Error"),
-    SERVER_ERROR_501(5001, "微服务调用错误"),
-    SERVICE_ERROR_UNAVAILABLE(5003, "微服务不可用", "micro-service unavailable"),
+    SERVER_ERROR(5000, 500, "系统错误", "Server Error"),
+    SERVER_ERROR_501(5001, "微服务调用错误", "Micro-service call error"),
+    SERVICE_ERROR_UNAVAILABLE(5003, "微服务不可用", "Micro-service Unavailable"),
     GATEWAY_TIMEOUT(5004, "网关超时", "Gateway Time-out"),
 
     /**
      * 账号及认证相关 40开头的四位数字
      */
     CLIENT_ERROR(4000, "客户端请求错误"),
-    CLIENT_ERROR_401(4001, "认证错误"),
-    CLIENT_ERROR_403(4003, "无权访问"),
-    CLIENT_PARAM_405(4005, "参数错误"),
+    CLIENT_AUTH_401(4001, 401, "认证错误", "User authentication failed"),
+    CLIENT_ACCESS_403(4003, 403, "无权访问", "User does not have access"),
+    CLIENT_ERROR_404(4004, 404, "找不到请求的资源", "Not found"),
+    CLIENT_METHOD_405(4005, 405, "请求方法错误", "Request method error"),
+    CLIENT_PARAM_406(4006, 400, "参数错误", "Request parameter error"),
 
     BAD_CREDENTIALS(4010, "bad_credentials"),   // ***
     ACCOUNT_DISABLED(4011, "账号已被禁用"),
@@ -76,22 +78,32 @@ public enum ResultEnum {
     ACCESS_DENIED_WHITE_IP_LIMITED(4232, "[access_denied]黑名单IP无权访问"),
     ACCESS_DENIED_AUTHORITY_EXPIRED(4233, "[access_denied]授权已过期");
 
-
+    // 状态
     private int code;
     private String message;
+    // http状态码
+    private int httpCode;
     private String englishMessage;
 
     ResultEnum(int code, String message) {
         this.code = code;
         this.message = message;
+    }
 
+    ResultEnum(int code, int httpCode, String message, String englishMessage) {
+        this.code = code;
+        this.httpCode = httpCode;
+        this.message = message;
+        this.englishMessage = englishMessage;
     }
 
     ResultEnum(int code, String message, String englishMessage) {
         this.code = code;
+        this.httpCode = 200;
         this.message = message;
         this.englishMessage = englishMessage;
     }
+
 
     public static boolean isSuccess(int code) {
         return code == ResultEnum.SUCCESS.getCode();
@@ -102,6 +114,7 @@ public enum ResultEnum {
         Optional<ResultEnum> opl = Arrays.stream(ResultEnum.values()).filter(e -> e.getCode() == code).findFirst();
         return opl.isPresent() ? opl.get().getMessage() : "";
     }
+
     public static String getEnMsgByCode(int code) {
         Optional<ResultEnum> opl = Arrays.stream(ResultEnum.values()).filter(e -> e.getCode() == code).findFirst();
         return opl.isPresent() ? opl.get().getEnglishMessage() : "";

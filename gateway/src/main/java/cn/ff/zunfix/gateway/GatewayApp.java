@@ -3,8 +3,8 @@ package cn.ff.zunfix.gateway;
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 /**
@@ -13,6 +13,8 @@ import reactor.core.publisher.Mono;
  * @author fengfan 2020/8/9
  */
 @SpringCloudApplication
+@EnableFeignClients(basePackages = {"cn.ff.zunfix.gateway.service.feign", "cn.ff.zunfix.common.security.service.feign"})
+//@MapperScan(basePackages = {"cn.ff.zunfix.common.security.mapper"})
 public class GatewayApp {
 
     public static void main(String[] args) {
@@ -25,11 +27,6 @@ public class GatewayApp {
      */
     @Bean(name = "ipKeyResolver")
     public KeyResolver ipKeyResolver(){
-        return new KeyResolver() {
-            @Override
-            public Mono<String> resolve(ServerWebExchange exchange) {
-                return Mono.just(exchange.getRequest().getRemoteAddress().getHostString());
-            }
-        };
+        return exchange -> Mono.just(exchange.getRequest().getRemoteAddress().getHostString());
     }
 }

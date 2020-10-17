@@ -7,6 +7,12 @@ package cn.ff.zunfix.common.core.constant;
  */
 public interface CommonConstant {
 
+
+    String SUPER_ADMIN_USER_ID = "1";
+
+
+    String NORM_DELIMITER = ":";
+
     /**
      * 删除标记
      */
@@ -19,6 +25,11 @@ public interface CommonConstant {
     String GATEWAY_HEADER_SERVER = "x-server-id"; // 所属微服务
     String GATEWAY_HEADER_TOKEN = "x-user-token"; // 用户token
     String GATEWAY_HEADER_CLIENT = "x-client-id"; // 来源客户端
+    String GATEWAY_HEADER_FROM = "x-request-source"; // 请求来源key ： OUT-来自外部的 IN-内部服务间调用
+
+    String GATEWAY_HEADER_FROM_IN = "IN"; // 请求来源value ： IN-内部服务间调用
+    String GATEWAY_HEADER_FROM_OUT = "OUT"; // 请求来源value ： OUT-来自外部的
+
 
 
     /**
